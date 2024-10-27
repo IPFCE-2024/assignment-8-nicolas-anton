@@ -11,6 +11,10 @@ typedef struct queue
   node *rear;
 } queue;
 
+typedef struct {
+  node *head;
+} stack;
+
 void initialize(queue *q);
 bool empty(const queue *q);
 bool full(const queue *q);
