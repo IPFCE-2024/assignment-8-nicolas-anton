@@ -1,6 +1,7 @@
 #include <catch2/catch_test_macros.hpp>
 
-extern "C" {
+extern "C"
+{
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -9,15 +10,17 @@ extern "C" {
 #include "queue.h"
 }
 
-TEST_CASE("initialize", "[queue]") {
+TEST_CASE("initialize", "[queue]")
+{
   queue q;
   initialize(&q);
-  REQUIRE(q.front == NULL);
-  REQUIRE(q.rear == NULL);
+  REQUIRE(q.front == nullptr);
+  REQUIRE(q.rear == nullptr);
   REQUIRE(q.size == 0);
 }
 
-TEST_CASE("empty", "[queue]") {
+TEST_CASE("empty", "[queue]")
+{
   queue q;
   q.front = NULL;
   q.rear = NULL;
@@ -32,7 +35,8 @@ TEST_CASE("empty", "[queue]") {
   REQUIRE(!empty(&q));
 }
 
-TEST_CASE("full", "[queue]") {
+TEST_CASE("full", "[queue]")
+{
   queue q;
   q.front = NULL;
   REQUIRE(!full(&q));
@@ -45,7 +49,8 @@ TEST_CASE("full", "[queue]") {
   REQUIRE(!full(&q));
 }
 
-TEST_CASE("enqueue", "[queue]") {
+TEST_CASE("enqueue", "[queue]")
+{
   queue q;
   q.front = NULL;
   q.rear = NULL;
@@ -53,20 +58,21 @@ TEST_CASE("enqueue", "[queue]") {
   const int x0 = 1;
   const int x1 = 2;
   enqueue(&q, x0);
-  REQUIRE(q.front != NULL);
-  REQUIRE(q.rear != NULL);
+  REQUIRE(q.front != nullptr);
+  REQUIRE(q.rear != nullptr);
   REQUIRE(q.front->data == x0);
   REQUIRE(q.size == 1);
 
   enqueue(&q, x1);
-  REQUIRE(q.front != NULL);
-  REQUIRE(q.rear != NULL);
+  REQUIRE(q.front != nullptr);
+  REQUIRE(q.rear != nullptr);
   REQUIRE(q.front->data == x0);
   REQUIRE(q.rear->data == x1);
   REQUIRE(q.size == 2);
 }
 
-TEST_CASE("dequeue", "[queue]") {
+TEST_CASE("dequeue", "[queue]")
+{
   queue q;
   q.front = NULL;
   q.rear = NULL;
@@ -75,7 +81,8 @@ TEST_CASE("dequeue", "[queue]") {
   const int x1 = 2;
 
   node *n0 = (node *)malloc(sizeof(node));
-  if (!n0) {
+  if (!n0)
+  {
     fprintf(stderr, "%s:%d Allocation with malloc() failed.\n", __FILE__,
             __LINE__);
     exit(1);
@@ -83,7 +90,8 @@ TEST_CASE("dequeue", "[queue]") {
   n0->data = x0;
   n0->next = NULL;
   node *n1 = (node *)malloc(sizeof(node));
-  if (!n1) {
+  if (!n1)
+  {
     fprintf(stderr, "%s:%d Allocation with malloc() failed.\n", __FILE__,
             __LINE__);
     exit(1);
@@ -102,20 +110,21 @@ TEST_CASE("dequeue", "[queue]") {
 
   const int y0 = dequeue(&q);
   REQUIRE(y0 == x0);
-  REQUIRE(q.front != NULL);
-  REQUIRE(q.rear != NULL);
+  REQUIRE(q.front != nullptr);
+  REQUIRE(q.rear != nullptr);
   REQUIRE(q.front->data == x1);
   REQUIRE(q.rear->data == x1);
   REQUIRE(q.size == 1);
 
   const int y1 = dequeue(&q);
   REQUIRE(y1 == x1);
-  REQUIRE(q.front == NULL);
-  REQUIRE(q.rear == NULL);
+  REQUIRE(q.front == nullptr);
+  REQUIRE(q.rear == nullptr);
   REQUIRE(q.size == 0);
 }
 
-TEST_CASE("queue", "[queue]") {
+TEST_CASE("queue", "[queue]")
+{
   queue q;
   initialize(&q);
   REQUIRE(empty(&q));
@@ -136,12 +145,14 @@ TEST_CASE("queue", "[queue]") {
 
   int xs[] = {1, 2, 3, 4, 5};
   const int len = sizeof(xs) / sizeof(int);
-  for (int i = 0; i < len; i++) {
+  for (int i = 0; i < len; i++)
+  {
     enqueue(&q, xs[i]);
   }
 
   int ys[len];
-  for (int i = 0; i < len; i++) {
+  for (int i = 0; i < len; i++)
+  {
     ys[i] = dequeue(&q);
   }
 
@@ -153,9 +164,11 @@ TEST_CASE("queue", "[queue]") {
   REQUIRE(xs[4] == ys[4]);
 }
 
-node *ll_create_node(int x) {
+node *ll_create_node(int x)
+{
   node *n = (node *)malloc(sizeof(node));
-  if (!n) {
+  if (!n)
+  {
     fprintf(stderr, "%s:%d Allocation with malloc() failed.\n", __FILE__,
             __LINE__);
     exit(1);
@@ -167,15 +180,18 @@ node *ll_create_node(int x) {
   return n;
 }
 
-node *ll_from_array(const int *xs, const int len) {
-  if (len == 0) {
+node *ll_from_array(const int *xs, const int len)
+{
+  if (len == 0)
+  {
     return NULL;
   }
 
   node *list = ll_create_node(xs[0]);
   node *current = list;
 
-  for (int i = 1; i < len; i++) {
+  for (int i = 1; i < len; i++)
+  {
     node *new_node = ll_create_node(xs[i]);
     current->next = new_node;
     current = current->next;
@@ -184,11 +200,13 @@ node *ll_from_array(const int *xs, const int len) {
   return list;
 }
 
-int ll_size(node *head) {
+int ll_size(node *head)
+{
   assert(head != NULL);
 
   int size = 0;
-  while (head != NULL) {
+  while (head != NULL)
+  {
     head = head->next;
     size++;
   }
@@ -204,11 +222,13 @@ int ll_size(node *head) {
  * @return pointer to the dynamically allocated array containing copies the data
  * from the linked list
  */
-int *ll_to_array(node *head) {
+int *ll_to_array(node *head)
+{
   assert(head != NULL);
   const int len = ll_size(head);
   int *arr = (int *)malloc(sizeof(int) * len);
-  if (!arr) {
+  if (!arr)
+  {
     fprintf(stderr, "%s:%d Allocation with malloc() failed.\n", __FILE__,
             __LINE__);
     exit(1);
@@ -216,7 +236,8 @@ int *ll_to_array(node *head) {
 
   int idx = 0;
   node *p = head;
-  while (p != NULL) {
+  while (p != NULL)
+  {
     arr[idx] = p->data;
     idx++;
     p = p->next;
@@ -234,24 +255,30 @@ int *ll_to_array(node *head) {
  *
  * @return true if the arrays are equal, false otherwise
  */
-bool arrays_equal(const int *arr1, const int *arr2, const int len) {
+bool arrays_equal(const int *arr1, const int *arr2, const int len)
+{
   assert(arr1 != NULL);
   assert(arr2 != NULL);
   assert(len > 0);
 
-  for (int i = 0; i < len; i++) {
-    if (arr1[i] != arr2[i]) {
+  for (int i = 0; i < len; i++)
+  {
+    if (arr1[i] != arr2[i])
+    {
       return false;
     }
   }
   return true;
 }
 
-void int_array_print(const int *arr, const int len) {
+void int_array_print(const int *arr, const int len)
+{
   fprintf(stderr, "[ ");
-  for (int i = 0; i < len; i++) {
+  for (int i = 0; i < len; i++)
+  {
     fprintf(stderr, "%d", arr[i]);
-    if (i < len - 1) {
+    if (i < len - 1)
+    {
       fprintf(stderr, ", ");
     }
   }
@@ -262,41 +289,44 @@ static const char *RESET = "\033[0m";
 static const char *RED = "\033[31m";
 static const char *GREEN = "\033[32m";
 
-#define INSERTION_SORT_TEST_CASE(input, expected)                              \
-  const int len = sizeof(input) / sizeof(int);                                 \
-  node *list = ll_from_array(input, len);                                      \
-  node *sorted = isort(list);                                                  \
-  int *arr = ll_to_array(sorted);                                              \
-  bool equal = arrays_equal(arr, expected, len);                               \
-  if (!equal) {                                                                \
-    fprintf(stderr, "%sExpected:%s\n", GREEN, RESET);                          \
-    int_array_print(expected, len);                                            \
-    fprintf(stderr, "%sGot:%s\n", RED, RESET);                                 \
-    int_array_print(arr, len);                                                 \
-  }                                                                            \
+#define INSERTION_SORT_TEST_CASE(input, expected)     \
+  const int len = sizeof(input) / sizeof(int);        \
+  node *list = ll_from_array(input, len);             \
+  node *sorted = isort(list);                         \
+  int *arr = ll_to_array(sorted);                     \
+  bool equal = arrays_equal(arr, expected, len);      \
+  if (!equal)                                         \
+  {                                                   \
+    fprintf(stderr, "%sExpected:%s\n", GREEN, RESET); \
+    int_array_print(expected, len);                   \
+    fprintf(stderr, "%sGot:%s\n", RED, RESET);        \
+    int_array_print(arr, len);                        \
+  }                                                   \
   REQUIRE(arrays_equal(arr, expected, len));
 
-TEST_CASE("positive-numbers", "[insertion_sort]") {
+TEST_CASE("positive-numbers", "[insertion_sort]")
+{
   const int input[] = {5, 22, 11, 33, 3, 2, 1};
-//   const int len = sizeof(input) / sizeof(int);
+  //   const int len = sizeof(input) / sizeof(int);
   const int input_sorted[] = {1, 2, 3, 5, 11, 22, 33};
 
   INSERTION_SORT_TEST_CASE(input, input_sorted);
 
-//   node *list = ll_from_array(input, len);
-//   node *sorted = isort(list);
-//   int *arr = ll_to_array(sorted);
-//   bool equal = arrays_equal(arr, input_sorted, len);
-//   if (!equal) {
-//     fprintf(stderr, "%sExpected:%s\n", GREEN, RESET);
-//     int_array_print(input_sorted, len);
-//     fprintf(stderr, "%sGot:%s\n", RED, RESET);
-//     int_array_print(arr, len);
-//   }
-//   REQUIRE(arrays_equal(arr, input_sorted, len));
+  //   node *list = ll_from_array(input, len);
+  //   node *sorted = isort(list);
+  //   int *arr = ll_to_array(sorted);
+  //   bool equal = arrays_equal(arr, input_sorted, len);
+  //   if (!equal) {
+  //     fprintf(stderr, "%sExpected:%s\n", GREEN, RESET);
+  //     int_array_print(input_sorted, len);
+  //     fprintf(stderr, "%sGot:%s\n", RED, RESET);
+  //     int_array_print(arr, len);
+  //   }
+  //   REQUIRE(arrays_equal(arr, input_sorted, len));
 }
 
-TEST_CASE("negative-numbers", "[insertion_sort]") {
+TEST_CASE("negative-numbers", "[insertion_sort]")
+{
   const int input[] = {-5, -22, -11, -33, -3, -2, -1};
   // const int len = sizeof(input) / sizeof(int);
   const int input_sorted[] = {-33, -22, -11, -5, -3, -2, -1};
@@ -309,30 +339,32 @@ TEST_CASE("negative-numbers", "[insertion_sort]") {
   // REQUIRE(arrays_equal(arr, input_sorted, len));
 }
 
-TEST_CASE("2-numbers", "[insertion_sort]") {
+TEST_CASE("2-numbers", "[insertion_sort]")
+{
   const int input[] = {1, 10};
-//   const int len = sizeof(input) / sizeof(int);
+  //   const int len = sizeof(input) / sizeof(int);
   const int input_sorted[] = {1, 10};
 
   INSERTION_SORT_TEST_CASE(input, input_sorted);
 
-//   node *list = ll_from_array(input, len);
-//   node *sorted = isort(list);
-//   int *arr = ll_to_array(sorted);
-//   REQUIRE(arrays_equal(arr, input_sorted, len));
+  //   node *list = ll_from_array(input, len);
+  //   node *sorted = isort(list);
+  //   int *arr = ll_to_array(sorted);
+  //   REQUIRE(arrays_equal(arr, input_sorted, len));
 }
 
-TEST_CASE("numbers", "[insertion_sort]") {
-  const int input[] = {3,  5,  11, 2,  16, 18, 6,  4,  -14, 9,
-                       -7, 20, 10, 19, 8,  1,  17, 13, 15,  -12};
-//   const int len = sizeof(input) / sizeof(int);
-  const int input_sorted[] = {-14, -12, -7, 1,  2,  3,  4,  5,  6,  8,
-                              9,   10,  11, 13, 15, 16, 17, 18, 19, 20};
+TEST_CASE("numbers", "[insertion_sort]")
+{
+  const int input[] = {3, 5, 11, 2, 16, 18, 6, 4, -14, 9,
+                       -7, 20, 10, 19, 8, 1, 17, 13, 15, -12};
+  //   const int len = sizeof(input) / sizeof(int);
+  const int input_sorted[] = {-14, -12, -7, 1, 2, 3, 4, 5, 6, 8,
+                              9, 10, 11, 13, 15, 16, 17, 18, 19, 20};
 
   INSERTION_SORT_TEST_CASE(input, input_sorted);
 
-//   node *list = ll_from_array(input, len);
-//   node *sorted = isort(list);
-//   int *arr = ll_to_array(sorted);
-//   REQUIRE(arrays_equal(arr, input_sorted, len));
+  //   node *list = ll_from_array(input, len);
+  //   node *sorted = isort(list);
+  //   int *arr = ll_to_array(sorted);
+  //   REQUIRE(arrays_equal(arr, input_sorted, len));
 }

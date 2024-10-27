@@ -3,8 +3,9 @@
 #include <stdbool.h>
 
 #include "node.h"
- 
-typedef struct queue {
+
+typedef struct queue
+{
   int size;
   node *front;
   node *rear;
@@ -15,3 +16,7 @@ bool empty(const queue *q);
 bool full(const queue *q);
 void enqueue(queue *q, int x);
 int dequeue(queue *q);
+void push(int element, node **head);
+int pop(node **head);
+void enqueueStack(queue *q, int x);
+int dequeueStack(queue *q);
